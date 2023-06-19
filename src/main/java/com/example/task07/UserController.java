@@ -42,7 +42,7 @@ public class UserController {
     @PatchMapping("/user/edit/{id}")
     public ResponseEntity<String> edit(@PathVariable("id") int id, @RequestBody EditForm form) {
 
-        //  0文字以上20文字未満で名前の入力をバリデーション
+//          0文字以上20文字未満で名前の入力をバリデーション
         if (users.containsKey(id)) {
             String name = form.getName();
             if (name.length() > 20 || form.getName().isEmpty()) {
