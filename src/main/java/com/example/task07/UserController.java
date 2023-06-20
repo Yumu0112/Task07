@@ -2,6 +2,7 @@ package com.example.task07;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Objects;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class UserController {
         users.put(789, "user03");
     }
 
-    @GetMapping("/user/index/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<String> getUser(@PathVariable int id) {
         String user = users.get(id);
         if (user != null) {
@@ -26,11 +27,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/user")
     public ResponseEntity<String> register(@RequestBody RegisterForm form) {
 
         //  名前が空だったらエラーを返却
-        if (form.getName() == null || form.getName().isEmpty()) {
+        if (Objects.isNull(form.getName())) {
             return ResponseEntity.badRequest().body("Name is required.");
 
         }
@@ -39,13 +40,13 @@ public class UserController {
     }
 
 
-    @PatchMapping("/user/edit/{id}")
-    public ResponseEntity<String> edit(@PathVariable("id") int id, @RequestBody EditForm form) {
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<String> edit(@PathVariable int id, @RequestBody EditForm form) {
 
-        //  0文字以上20文字未満で名前の入力をバリデーション
+//          0文字以上20文字未満で名前の入力をバリデーション
         if (users.containsKey(id)) {
             String name = form.getName();
-            if (name.length() > 20 || form.getName().isEmpty()) {
+            if (name.length() > 20 || Objects.isNull(form.getName())) {
                 return ResponseEntity.badRequest().body("Enter a name with at least 0 characters or no more than 20 characters.");
             }
 
@@ -56,7 +57,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         String user = users.remove(id);
         if (user != null) {
